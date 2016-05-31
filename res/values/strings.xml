@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">项目管理</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="user_id">用户名</string>
+    <string name="password">密码</string>
+    <string name="login">登  录</string>
+    <string name="back">返回</string>
+    <string name="homepage">首页</string>
+    <string name="exit">退出</string>
+    <string name="navigation">导航</string>
+
+</resources>

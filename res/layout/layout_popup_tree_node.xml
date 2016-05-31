@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+    <View 
+        android:id="@+id/vSelected"
+        android:layout_width="3dp"
+        android:layout_height="match_parent"/>
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:textColor="@color/white"
+        android:paddingLeft="5dp"
+        android:textSize="8pt"></TextView>
+    <TextView
+        android:id="@+id/tvNext"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:textColor="@color/white"
+        android:text=">"
+        android:textSize="8pt"></TextView>
+</merge>
