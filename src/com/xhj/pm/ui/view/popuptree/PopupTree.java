@@ -161,7 +161,7 @@ public class PopupTree{
 			this.tvNext=(TextView)this.findViewById(R.id.tvNext);
 			this.vSelected=(View)this.findViewById(R.id.vSelected);
 			this.setOrientation(LinearLayout.HORIZONTAL);
-			this.setPadding(10, 15, 10, 15);
+			this.setPadding(10, 25, 10, 25);
 			this.setOnClickListener(this);
 		}
 		
