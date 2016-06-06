@@ -67,11 +67,11 @@ public class XWebView  extends WebView {
 		this.setWebViewClient(new MyWebViewClient());
 		this.getSettings().setJavaScriptEnabled(true);
 		this.getSettings().setAppCacheEnabled(false);
-		this.getSettings().setSupportZoom(true);
+		//this.getSettings().setSupportZoom(true);
 		//this.getSettings().setBuiltInZoomControls(false);
-		this.getSettings().setBuiltInZoomControls(true);   
+		//this.getSettings().setBuiltInZoomControls(true);   
 		//this.getSettings().setUseWideViewPort(true);
-		this.setZoomControlGone(this);
+		//this.setZoomControlGone(this);
 		this.mJsObj=new JsObj();
 		this.addJavascriptInterface(this.mJsObj, JS_OBJ_NAME);
     }
