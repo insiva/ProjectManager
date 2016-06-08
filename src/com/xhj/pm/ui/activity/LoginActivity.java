@@ -13,6 +13,7 @@ import com.xhj.pm.utils.Utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -93,7 +94,9 @@ public class LoginActivity extends AbsActivity implements OnClickListener{
 			super.onPostExecute();
 			if(this.mStatus==Constant.RESULT_STATUS_OK){
 				Config.setToken(mLoginer.mToken);
-				Utils.setCookie(LoginActivity.this, Utils.getHost(this.mUrl), "token", mLoginer.mToken);
+				String host=Utils.getHost(this.mUrl);
+				Utils.setCookie(LoginActivity.this, host, Constant.TOKEN_KEY, mLoginer.mToken);
+				Utils.setCookie(LoginActivity.this, host, Constant.SDK_VERSION_KEY, Integer.toString(Build.VERSION.SDK_INT));
 				MainActivity.startActivity(LoginActivity.this);
 				LoginActivity.this.finish();
 			}else{

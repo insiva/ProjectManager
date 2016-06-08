@@ -3,6 +3,7 @@
     <View 
         android:id="@+id/vSelected"
         android:layout_width="3dp"
+        android:visibility="invisible"
         android:layout_height="match_parent"/>
     <TextView
         android:id="@+id/tvName"

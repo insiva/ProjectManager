@@ -1,32 +1,33 @@
 package com.xhj.pm.ui.view;
 
 
-import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import com.xhj.pm.utils.Utils;
+import com.xhj.pm.Constant;
+import com.xhj.pm.ui.view.MyInputConnection.InputListener;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.Context;
+import android.os.Build;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputConnection;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.DatePicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.ZoomButtonsController;
 
 @SuppressLint("SetJavaScriptEnabled")
-public class XWebView  extends WebView {
+public class XWebView  extends WebView implements InputListener{
 	
 	static final String JS_OBJ_NAME="JsWvObj";
 	static final int MSG_SHOW_DATE_PICKER=0x001;
@@ -40,6 +41,7 @@ public class XWebView  extends WebView {
 	public String mCurrentUrl;
 	MyDatePickerDialog mMyDpDialog;
 	
+	@SuppressLint("HandlerLeak")
 	Handler mHandler=new Handler(){
 		public void handleMessage(android.os.Message msg) {
 			if (msg.what==MSG_SHOW_DATE_PICKER) {
@@ -62,42 +64,28 @@ public class XWebView  extends WebView {
     	this.tvTitle=tTitle;
     }
     
+    @Override
+    public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
+    	InputConnection conn=null;
+    	if(Build.VERSION.SDK_INT<=Constant.JELLY_BEN_SDK_VERSION){
+    		conn=new MyInputConnection(this, false,this);
+    		if(outAttrs!=null){
+        		outAttrs.inputType=161;
+    		}
+    	}else{
+    		conn=super.onCreateInputConnection(outAttrs);
+    	}
+        return conn;
+    }
+    
     private void init(){
         this.setWebChromeClient(new MyWebChromeClient());
 		this.setWebViewClient(new MyWebViewClient());
 		this.getSettings().setJavaScriptEnabled(true);
 		this.getSettings().setAppCacheEnabled(false);
-		//this.getSettings().setSupportZoom(true);
-		//this.getSettings().setBuiltInZoomControls(false);
-		//this.getSettings().setBuiltInZoomControls(true);   
-		//this.getSettings().setUseWideViewPort(true);
-		//this.setZoomControlGone(this);
 		this.mJsObj=new JsObj();
 		this.addJavascriptInterface(this.mJsObj, JS_OBJ_NAME);
     }
-    
-    private void setZoomControlGone(View view) {  
-        Class classType;  
-        Field field;  
-        try {  
-            classType = WebView.class;  
-            field = classType.getDeclaredField("mZoomButtonsController");  
-            field.setAccessible(true);  
-            ZoomButtonsController mZoomButtonsController = new ZoomButtonsController(view);  
-            mZoomButtonsController.getZoomControls().setVisibility(View.GONE);  
-            try {  
-                field.set(view, mZoomButtonsController);  
-            } catch (IllegalArgumentException e) {  
-                e.printStackTrace();  
-            } catch (IllegalAccessException e) {  
-                e.printStackTrace();  
-            }  
-        } catch (SecurityException e) {  
-            e.printStackTrace();  
-        } catch (NoSuchFieldException e) {  
-            e.printStackTrace();  
-        }  
-    }  
     
     private class MyWebChromeClient extends android.webkit.WebChromeClient {
         @Override
@@ -120,9 +108,9 @@ public class XWebView  extends WebView {
         //on
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
-        @SuppressWarnings("deprecation")
 		LayoutParams lp = (LayoutParams) pbLoading.getLayoutParams();
         lp.x = l;
         lp.y = t;
@@ -142,13 +130,6 @@ public class XWebView  extends WebView {
 		@Override
 		public void onPageFinished(WebView view, String url) {
 			super.onPageFinished(view, url);
-			//XWebView.this.setZoomControlGone(XWebView.this);
-		}
-		
-		@Override
-		public void onScaleChanged(WebView view, float oldScale, float newScale) {
-			// TODO Auto-generated method stub
-			super.onScaleChanged(view, oldScale, newScale);
 			//XWebView.this.setZoomControlGone(XWebView.this);
 		}
 	}
@@ -179,6 +160,7 @@ public class XWebView  extends WebView {
 					calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 		}
 		
+		@SuppressLint("SimpleDateFormat")
 		public void setDate(final String date){
 			Date d=new Date();
 			if(!TextUtils.isEmpty(date)){
@@ -198,13 +180,24 @@ public class XWebView  extends WebView {
 			this.mDpDialog.show();
 		}
 		
+		@SuppressLint("DefaultLocale")
 		@Override
 		public void onDateSet(DatePicker view, int year, int monthOfYear,
 				int dayOfMonth) {
 			//Utils.toast(this.mObjId);
-			String u=String.format("javascript:onDateSelected('%s','%d-%d-%d')",mObjId, year,monthOfYear+1,dayOfMonth);
+			int m=monthOfYear+1;
+			String ms=m>9?Integer.toString(m):("0"+Integer.toString(m));
+			String ds=dayOfMonth>9?Integer.toString(dayOfMonth):("0"+Integer.toString(dayOfMonth));
+			String u=String.format("javascript:onDateSelected('%s','%d-%s-%s')",mObjId, year,ms,ds);
 			 XWebView.this.loadUrl(u);  
 		}
+	}
 
+	@SuppressLint("DefaultLocale")
+	@Override
+	public void onCommitText(String text, int newCursorPosition) {
+		String u=String.format("javascript:$.onCommitText('%s',%d)",text,newCursorPosition);
+		 XWebView.this.loadUrl(u);  
+		 this.onCreateInputConnection(null);
 	}
 }

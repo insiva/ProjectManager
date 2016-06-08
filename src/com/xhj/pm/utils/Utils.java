@@ -264,6 +264,9 @@ public class Utils {
 	}
 	
 	public static void setCookie(Context context,String url,String key,String value){
+		if(value==null){
+			value="";
+		}
 	    CookieSyncManager.createInstance(context);  
 	    CookieManager cookieManager = CookieManager.getInstance();  
 	    cookieManager.setCookie(url, String.format("%s=%s", key,value));              
@@ -274,7 +277,20 @@ public class Utils {
 	    CookieSyncManager.createInstance(context);  
 	    CookieManager cookieManager = CookieManager.getInstance();  
 	    String c= cookieManager.getCookie(url);
-	    return  c;
+	    if(TextUtils.isEmpty(c)){
+	    	return null;
+	    }
+	    String[] cookies=c.split(";");
+	    for (String cookie : cookies) {
+			String[] pair=cookie.split("=");
+	    	if(pair.length<2||TextUtils.isEmpty(pair[0])||TextUtils.isEmpty(pair[1])){
+	    		continue;
+	    	}
+			if(key.equals(pair[0].trim())){
+				return pair[1].trim();
+			}
+		}
+	    return  null;
 	}
 	
 	public static void removeCookie(Context context) {

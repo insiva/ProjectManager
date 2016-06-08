@@ -1,6 +1,5 @@
 package com.xhj.pm.ui.view.popuptree;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.xhj.pm.R;
@@ -149,7 +148,7 @@ public class PopupTree{
 		private Context mContext;
 		private Node mNode;
 		private TextView tvName;
-		private View vSelected;
+		//private View vSelected;
 		private TextView tvNext;
 		private int mPosition;
 		
@@ -159,7 +158,9 @@ public class PopupTree{
 			View.inflate(context, R.layout.layout_popup_tree_node, this);
 			this.tvName=(TextView)this.findViewById(R.id.tvName);
 			this.tvNext=(TextView)this.findViewById(R.id.tvNext);
-			this.vSelected=(View)this.findViewById(R.id.vSelected);
+			//this.vSelected=(View)this.findViewById(R.id.vSelected);
+			this.setClickable(true);
+			this.setBackgroundResource(R.drawable.black_selector);
 			this.setOrientation(LinearLayout.HORIZONTAL);
 			this.setPadding(10, 25, 10, 25);
 			this.setOnClickListener(this);
@@ -185,9 +186,15 @@ public class PopupTree{
 		
 		public void onSelected(){
 			if(this.mNode.mSelected){
-				this.vSelected.setBackgroundColor(Color.LTGRAY);
+				//this.vSelected.setBackgroundColor(Color.LTGRAY);
+				//this.setBackgroundColor(Color.GRAY);
+				this.setBackgroundResource(R.drawable.gray_bg);
+				this.setPadding(10, 25, 10, 25);
 			}else{
-				this.vSelected.setBackgroundColor(Color.TRANSPARENT);
+				//this.vSelected.setBackgroundColor(Color.TRANSPARENT);
+				//this.setBackgroundColor(Color.TRANSPARENT);
+				this.setBackgroundResource(R.drawable.black_selector);
+				this.setPadding(10, 25, 10, 25);
 			}
 		}
 	}

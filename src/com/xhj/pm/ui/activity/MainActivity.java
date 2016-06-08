@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
@@ -32,7 +31,7 @@ import com.xhj.pm.ui.view.popuptree.PopupTreeAdapter;
 
 public class MainActivity  extends AbsActivity implements OnClickListener{
 	private static final String HOMPAGE_URL=Constant.MOBILE_PAGES_BASE_URL+"Main.aspx?token=%s";
-	private static final String NAVIGATION_URL="%s?apiname=listNavigations";
+	private static final String NAVIGATION_URL="%s?encode=utf8&apiname=listNavigations";
 	@ViewInject(R.id.tvBack)
 	private TextView tvBack;
 	@ViewInject(R.id.tvNavigation)
@@ -93,14 +92,6 @@ public class MainActivity  extends AbsActivity implements OnClickListener{
 		default:
 			break;
 		}
-	}
-	
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		if(this.hideNavigation()){
-			return true;
-		}
-		return super.onTouchEvent(event);
 	}
 	
 	@Override
@@ -224,7 +215,7 @@ public class MainActivity  extends AbsActivity implements OnClickListener{
 		for(int i=0;i<l;i++){
 			Node node=new Node();
 			JSONObject jsonObject=jsonArray.optJSONObject(i);
-			node.mName=jsonObject.optString("name");
+			node.mName=java.net.URLDecoder.decode(jsonObject.optString("name"));
 			node.mValue=jsonObject.optString("url");
 			node.mChildren=this.parseNavigationJsonArray(jsonObject.optJSONArray("children"));
 			ns.add(node);

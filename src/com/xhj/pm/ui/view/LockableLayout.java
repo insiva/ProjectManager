@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
@@ -39,12 +40,16 @@ public class LockableLayout extends  FrameLayout {
 					LockableLayout.this.mOnTimeOutUnLock.onTimeOutUnLock();
 				}
 				break;
+			case 23:
+				InputMethodManager  input=(InputMethodManager) LockableLayout.this.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+				input.showSoftInput(LockableLayout.this.pbWait,0);
+				break;
 				default:
 					break;
 			}
 		}
 	};
-
+	
 	public LockableLayout(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		this.init(context);
