@@ -1,6 +1,9 @@
 package com.xhj.pm.ui.activity.base;
 
+
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 
 public abstract class AbsActivity extends AbsFragmentActivity {
 	

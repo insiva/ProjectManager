@@ -1,5 +1,7 @@
 package com.xhj.pm.ui.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 
@@ -30,5 +32,10 @@ public class WelcomeActivity  extends AbsActivity {
 			MainActivity.startActivity(this);
 		}
 		this.finish();
+	}
+	
+	public static void startActivity(Context ctx) {
+		Intent intent = new Intent(ctx, WelcomeActivity.class);
+		ctx.startActivity(intent);
 	}
 }

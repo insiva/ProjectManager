@@ -19,4 +19,7 @@ public interface Constant {
 	public static final String SDK_VERSION_KEY="sdk_version";
 	public static final String TOKEN_KEY="token";
 	public static final int JELLY_BEN_SDK_VERSION=18;
+	
+	public static final String BAIDU_API_KEY="wP40ZGGrtN43Ws7ZyzSHYtCu";
+	public static final String ACTION_NEW_NOTIFICATION="com.matteo.pm.action.new_notification";
 }

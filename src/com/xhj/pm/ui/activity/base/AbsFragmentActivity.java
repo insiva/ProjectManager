@@ -9,7 +9,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
-import com.umeng.analytics.MobclickAgent;
 
 public abstract class AbsFragmentActivity extends FragmentActivity {
 
@@ -28,13 +27,11 @@ public abstract class AbsFragmentActivity extends FragmentActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		MobclickAgent.onResume(this);
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-		MobclickAgent.onPause(this);
 	}
 
 	@Override
